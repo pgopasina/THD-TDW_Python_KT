@@ -30,4 +30,5 @@ jobs:
           docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/TDW-KT-App:$GITHUB_SHA
 
       - name: Post Image URI
-        run: echo "Image URI: gcr.io/${{ secrets.GCP_PROJECT_ID }}/TDW-KT-App:$GITHUB_SHA"
+        run: |
+          echo "Image URI: gcr.io/${{ secrets.GCP_PROJECT_ID }}/TDW-KT-App:$GITHUB_SHA"
