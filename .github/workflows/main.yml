@@ -19,7 +19,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Authenticate Docker to Artifact Registry
-        run: gcloud auth configure-docker \us-central1-docker.pkg.dev
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build the Docker Image
         run: docker build -t us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/tdw-kt-gcr/tdw-kt-img:$GITHUB_SHA .
