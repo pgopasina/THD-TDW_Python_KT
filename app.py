@@ -33,7 +33,7 @@ with app.app_context():
 @app.route('/',methods=['GET'])
 def createUser1():
     data = "Hello World"
-    return jsonify({'message': data}), 200
+    return f"<h1>{data}</h1>", 200
 
 @app.route('/users',methods=['POST'])
 def createUser():
@@ -87,8 +87,8 @@ def deleteUser(id):
 
 
 
-if __name__ == "__main__":
-    app.run()
-
 # if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=8080, debug=True)
+#     app.run()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
