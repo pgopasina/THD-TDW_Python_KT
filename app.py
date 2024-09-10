@@ -29,6 +29,11 @@ class Users(db.Model):
 
 with app.app_context():
     db.create_all()
+    
+@app.route('/',methods=['GET'])
+def createUser1():
+    data = "Hello World"
+    return jsonify({'message': data}), 200
 
 @app.route('/users',methods=['POST'])
 def createUser():
