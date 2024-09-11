@@ -30,3 +30,31 @@ jobs:
       - name: Post Image URI
         run: |
           echo "Image URI: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/tdw-kt-gcr/tdw-kt-img:$GITHUB_SHA"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout deployment
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy tdw-kt-service \
+            --image=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/tdw-kt-gcr/tdw-kt-img:$GITHUB_SHA \
+            --region=us-central1 \
+            --platform=managed \
+            --allow-unauthenticated \
+            --project=${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Post Deployment URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe tdw-kt-service --region=us-central1 --format='value(status.url)')
+          echo "Cloud Run Service URL: $SERVICE_URL"
+     
