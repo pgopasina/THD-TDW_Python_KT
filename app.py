@@ -11,13 +11,14 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 
 db = SQLAlchemy(app)
 
+# Defined users table model
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     role = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
 
-# deprecated
+# before_first_request decorated is deprecated
 # @app.before_first_request
 # def createTable():
 #     db.create_all()
@@ -30,11 +31,13 @@ class Users(db.Model):
 with app.app_context():
     db.create_all()
     
+#Default route    
 @app.route('/',methods=['GET'])
 def createUser1():
     data = "Hello World"
     return f"<h1>{data}</h1>", 200
 
+#POST call
 @app.route('/users',methods=['POST'])
 def createUser():
     data = request.get_json()
@@ -50,13 +53,15 @@ def createUser():
     }
     return jsonify({'message': 'User created successfully','user': userData}), 200
 
+# GET call
 @app.route('/users', methods=['GET'])
 def getUsers():
     users = Users.query.all()
     # Get users get based on ID
     # user = Users.query.get_or_404(id)
     return jsonify([{'id':user.id,'name':user.name,'role':user.role,'email':user.email} for user in users]), 200
-    
+
+# PUT call
 @app.route("/users/<int:id>", methods=['PUT'])
 def updateUser(id):
     user = Users.query.get_or_404(id)
@@ -76,8 +81,8 @@ def updateUser(id):
     }
 
     return jsonify({"message": "User updated successfully", "updated_user": updatedUser}), 200
-    
 
+#DELETE call  
 @app.route('/users/<int:id>', methods=['DELETE'])
 def deleteUser(id):
     user = Users.query.get_or_404(id)
@@ -85,8 +90,7 @@ def deleteUser(id):
     db.session.commit()
     return jsonify({'message': 'User deleted successfully'}),200
 
-
-
+# Setting Port to localhost:5000
 # if __name__ == "__main__":
 #     app.run()
 

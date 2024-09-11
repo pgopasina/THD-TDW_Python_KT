@@ -18,7 +18,6 @@ RUN python -m venv /env && \
 # Expose the port the app will run on
 EXPOSE 5000
 
-
 # Start the application
 CMD ["python", "app.py"]
 
