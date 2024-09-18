@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: API for managing users
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000
+    description: Local server
+paths:
+  /:
+    get:
+      summary: "Default Route"
+      description: "Returns a greeting message."
+      responses:
+        '200':
+          description: "Greeting message"
+          content:
+            text/html:
+              schema:
+                type: string
+                example: "<h1>Hello World</h1>"
+  /users:
+    get:
+      summary: "Get Users"
+      description: "Fetch all users."
+      responses:
+        '200':
+          description: "A list of users"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    name:
+                      type: string
+                      example: "John Doe"
+                    role:
+                      type: string
+                      example: "Admin"
+                    email:
+                      type: string
+                      example: "john.doe@example.com"
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+    post:
+      summary: "Create User"
+      description: "Create a new user."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                role:
+                  type: string
+                email:
+                  type: string
+              required:
+                - name
+                - role
+                - email
+      responses:
+        '201':
+          description: "User created successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+  /users/{id}:
+    put:
+      summary: "Update User"
+      description: "Update an existing user."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                role:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: "User updated successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  updated_user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      role:
+                        type: string
+                      email:
+                        type: string
+        '400':
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+    delete:
+      summary: "Delete User"
+      description: "Delete a user by ID."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "User deleted successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  message:
+                    type: string
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
