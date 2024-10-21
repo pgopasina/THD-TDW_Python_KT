@@ -3,7 +3,7 @@ service-account.json
 *service-account*.json
 .DS_Store
 .vscode
-env/
+venv/
 .coverage
 pip.conf
 
